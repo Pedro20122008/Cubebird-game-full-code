@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cube bird</title>
+    <style>
+        /* Estilos gerais */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* Estilos da tela de início */
+  
+  #startScreen {
+    background-color: #333;
+    color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  #startContent {
+    text-align: center;
+  }
+  
+  #startContent h1 {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  #startContent p {
+    font-size: 20px;
+    margin-bottom: 25px;
+  }
+  
+  #skinSelection {
+    margin-bottom: 25px;
+    font-size: large;
+  }
+  
+  #skinSelectiona {
+    margin-bottom: 25px;
+  }
+  
+  #skinSelectiona button{
+    width: 120px;
+    height: 40px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+    margin: 10px; 
+  }
+
+  #skinSelectiona button:hover{
+    background-color: #777;
+  }
+
+  #skinSelection button,
+  #startContent button {
+    width: 120px;
+    height: 40px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+  }
+  
+  #skinSelection button:hover,
+  #startContent button:hover {
+    background-color: #777;
+  }
+  
+  /* Estilos do jogo */
+  
+  #gameContainer {
+    display: none;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 450px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #gameCanvas {
+    width: 400px;
+    height: 600px;
+    border: 1px solid #ddd;
+  }
+  
+  #gameInfo {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  #gameInfo div {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos da tela de game over */
+  
+  #finalScorep{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 160px;
+  }
+
+  #finalCoinsp{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 200px;
+  }
+
+  #finalTotalScorep{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 240px;
+  }
+
+  #finalTotalCoinsp{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 280px;
+  }
+
+  #gameOverScreen {
+    display: none;
+    background-color: #333;
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #gameOverScreen h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    position: fixed;
+    top: 100px;
+  }
+  
+  #gameOverScreen p {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+  
+  #RestartGame {
+    width: 500px;
+    height: 60px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    position: fixed;
+    top: 500px;
+  }
+
+  #RestartGame:hover {
+    background-color: #444;
+  }
+
+  #resetTotalPoint {
+    width: 15px;
+    height: 15px;
+    background-color: #444;
+    color: #fff;
+    font-size: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    position: fixed;
+    top: 100px;
+    left: 30px;
+  }
+  
+  #resetTotalPoint:hover {
+    background-color: #444;
+  }
+  
+  /* Estilos do pássaro */
+  
+  .bird {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: flap 0.5s infinite;
+  }
+  
+  .bird.flap {
+    animation: none;
+  }
+  
+  @keyframes flap {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    50% {
+      transform: translate(-50%, -50%) rotate(-20deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+  }
+  
+  /* Estilos dos obstáculos */
+  
+  .obstacle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    border-radius: 10px;
+  }
+  
+  .obstacle.top {
+    transform: rotate(180deg);
+  }
+  
+  /* Estilos das moedas */
+  
+  .coin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #ffd700;
+  }
+  .finalCoins {
+    position: absolute;
+    top: 300px;
+  }
+  .finalScore {
+    position: absolute;
+    top: 350px;
+  }
+    </style>
+</head>
+<body>
+    <div id="startScreen">
+        <div id="startContent">
+            <h1>Cube bird</h1>
+            <p>Pressione <strong>Espaço</strong> para começar</p>
+            <div id="skinSelection">
+                <p>Escolha a Skin:</p>
+                <button onclick="selectSkin('yellow'); startGame()" style="background-color: #FFD700;">Amarelo</button> 
+                <button onclick="selectSkin('red'); startGame()" style="background-color: #FF6347;">Vermelho</button>
+                <button onclick="selectSkin('blue'); startGame()" style="background-color: #1E90FF;">Azul</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="gameContainer" style="display: none;">
+        <canvas id="gameCanvas"></canvas>
+        <div id="gameInfo">
+            <div id="score">Pontuação: 0</div>
+            <div id="coins">Moedas: 0</div>
+            <div id="highScore">Recorde: 0</div>
+            <div id="totalCoins">Total de Moedas: 0</div>
+        </div>
+    </div>
+    <div id="gameOverScreen" style="display: none;">
+        <h1>Game Over</h1>
+        <div id="finalScorep">
+            <p>Pontuação Final: <span id="finalScore">0</span></p>
+        </div>
+        <div id="finalCoinsp">
+            <p>Moedas Coletadas: <span id="finalCoins">0</span></p>
+        </div>
+        <div id="finalTotalScorep">
+            <p>Melhor Pontuação: <span id="finalTotalScore">0</span></p>
+        </div>
+        <div id="finalTotalCoinsp">
+            <p>Total de Moedas: <span id="finalTotalCoins">0</span></p>
+        </div>
+        <button onclick="resetHighScore()" id="resetTotalPoint">Resetar Recorde</button>
+        <div id="skinSelectiona">
+            <p style="text-align: center; margin-top: 280px;"><strong style="font-size: 23px; ">ESCOLHA A SKIN:</strong></p>
+            <div style="text-align: center;">
+                <button onclick="selectSkin('yellow'); startGame()" style="background-color: #FFD700;" id="skinsa">Amarelo</button> 
+                <button onclick="selectSkin('red'); startGame()" style="background-color: #FF6347;" id="skinsv">Vermelho</button>
+                <button onclick="selectSkin('blue'); startGame()" style="background-color: #1E90FF;" id="skinsz">Azul</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = 800;
+        canvas.height = 600;
+        
+        let bird = {
+            x: 50,
+            y: 150,
+            width: 20,
+            height: 20,
+            gravity: 0.6,
+            lift: -8, // Valor reduzido para o pulo
+            velocity: 0,
+            color: localStorage.getItem('birdColor') || 'yellow' // Carrega a cor da skin do pássaro
+        };
+        
+        let pipes = [];
+        let pipeWidth = 50;
+        let pipeGap = 150;
+        let frame = 0;
+        let score = 0;
+        let coins = 0;
+        let gameOver = false;
+        
+        const highScoreKey = 'highScore';
+        const totalCoinsKey = 'totalCoins';
+        const birdColorKey = 'birdColor';
+        let highScore = parseInt(localStorage.getItem(highScoreKey)) || 0;
+        let totalCoins = parseInt(localStorage.getItem(totalCoinsKey)) || 0;
+        
+        function drawBird() {
+            ctx.fillStyle = bird.color;
+            ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
+        
+        function updateBird() {
+            bird.velocity += bird.gravity;
+            bird.y += bird.velocity;
+        
+            if (bird.y + bird.height > canvas.height || bird.y < 0) {
+                gameOver = true;
+            }
+        }
+        
+        function createPipe() {
+            let pipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 20)) + 10;
+            pipes.push({
+                x: canvas.width,
+                y: 0,
+                width: pipeWidth,
+                height: pipeHeight
+            });
+            pipes.push({
+                x: canvas.width,
+                y: pipeHeight + pipeGap,
+                width: pipeWidth,
+                height: canvas.height - pipeHeight - pipeGap
+            });
+        }
+        
+        function drawPipes() {
+            ctx.fillStyle = '#0f0';
+            pipes.forEach(pipe => {
+                ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+            });
+        }
+        
+        function updatePipes() {
+            pipes.forEach(pipe => {
+                pipe.x -= 2;
+        
+                if (pipe.x + pipe.width < 0) {
+                    pipes.shift();
+                    pipes.shift();
+                    score ++; //adiciona 1 ponto por bloco passado
+                    coins += 1; // Adiciona uma moeda a cada ponto
+                    if(score>10){
+                         coins += 2;// A partir de de 10 voce ganhara 2 coins
+                    }
+                    if(score>100){
+                        coins += 10;// A partir de de 100 voce ganhara 10 coins
+                    }
+        
+                }
+                
+        
+                if (
+                    bird.x < pipe.x + pipe.width &&
+                    bird.x + bird.width > pipe.x &&
+                    bird.y < pipe.y + pipe.height &&
+                    bird.y + bird.height > pipe.y
+                ) {
+                    gameOver = true;
+                }
+            });
+        }
+        
+        function drawInfo() {
+            document.getElementById('score').textContent = `Pontuação: ${score}`;
+            document.getElementById('coins').textContent = `Moedas: ${coins}`;
+            document.getElementById('highScore').textContent = `Recorde: ${highScore}`;
+            document.getElementById('totalCoins').textContent = `Total de Moedas: ${totalCoins}`;
+        }
+        
+        function updateHighScore() {
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem(highScoreKey, highScore);
+            }
+        }
+        
+        function updateTotalCoins() {
+            totalCoins += coins;
+            localStorage.setItem(totalCoinsKey, totalCoins);
+            document.getElementById('totalCoins').textContent = `Total de Moedas: ${totalCoins}`; // Atualiza o contador de moedas totais na fase
+        }
+        
+        function showGameOverScreen() {
+            document.getElementById('gameOverScreen').style.display = 'flex';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalCoins').textContent = coins;
+            document.getElementById('finalTotalScore').textContent = highScore; // Exibe o recorde
+            document.getElementById('finalTotalCoins').textContent = totalCoins; // Exibe o total de moedas
+            document.getElementById('gameContainer').style.display = 'none';
+        }
+        
+        
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('gameOverScreen').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'flex';
+            
+            bird.y = 150;
+            bird.velocity = 0;
+            pipes = [];
+            score = 0;
+            coins = 0;
+            gameOver = false;
+            
+            createPipe();
+            draw();
+        }
+        
+        function resetHighScore() {
+            localStorage.removeItem(highScoreKey);
+            highScore = 0;
+            document.getElementById('highScore').textContent = `Recorde: ${highScore}`;
+          }
+        
+        function draw() {
+            if (gameOver) {
+                updateHighScore();
+                updateTotalCoins();
+                showGameOverScreen();
+                return;
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            updateBird();
+            drawBird();
+            
+            if (frame % 90 === 0) {
+                createPipe();
+            }
+            
+            updatePipes();
+            drawPipes();
+            drawInfo();
+            
+            frame++;
+            requestAnimationFrame(draw);
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'ArrowUp' && !gameOver) {
+                bird.velocity = bird.lift;
+            } else if (e.code === 'ArrowUp') {
+                if (document.getElementById('startScreen').style.display === 'none' && gameOver) {
+                } else if (document.getElementById('startScreen').style.display === 'flex') {
+                }
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !gameOver) {
+                bird.velocity = bird.lift;
+            } else if (e.code === 'Space') {
+                if (document.getElementById('startScreen').style.display === 'none' && gameOver) {
+                } else if (document.getElementById('startScreen').style.display === 'flex') {
+                }
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'KeyW' && !gameOver) {
+                bird.velocity = bird.lift;
+            } else if (e.code === 'KeyW') {
+                if (document.getElementById('startScreen').style.display === 'none' && gameOver) {
+                } else if (document.getElementById('startScreen').style.display === 'flex') {
+                }
+            }
+        });
+        
+        // Adiciona a lógica para selecionar a skin
+        function selectSkin(color) {
+            bird.color = color;
+            localStorage.setItem(birdColorKey, color);
+        }
+        
+        function selectSkin(color) {
+            bird.color = color;
+            localStorage.setItem(birdColorKey, color);
+        }
+        // Carrega a skin escolhida quando a página é carregada
+        window.addEventListener('load', () => {
+            bird.color = localStorage.getItem(birdColorKey) || 'yellow'; // Define a cor do pássaro
+        });
+    </script>
+</body>
+</html>

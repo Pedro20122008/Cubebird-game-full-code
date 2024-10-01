@@ -11,6 +11,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    user-select: none;
   }
   
   body {
@@ -332,8 +333,8 @@
         <div id="skinSelectiona">
             <p style="text-align: center; margin-top: 280px;"><strong style="font-size: 23px; ">ESCOLHA A SKIN:</strong></p>
             <div style="text-align: center;">
-                <button onclick="selectSkin('yellow'); startGame()" style="background-color: #FFD700;" id="skinsa">Amarelo</button> 
-                <button onclick="selectSkin('red'); startGame()" style="background-color: #FF6347;" id="skinsv">Vermelho</button>
+                <button onclick="selectSkin('yellow'); startGame()" style="background-color: #eeff00;" id="skinsa">Amarelo</button> 
+                <button onclick="selectSkin('red'); startGame()" style="background-color: #ff2600;" id="skinsv">Vermelho</button>
                 <button onclick="selectSkin('blue'); startGame()" style="background-color: #1E90FF;" id="skinsz">Azul</button>
             </div>
         </div>
@@ -422,6 +423,9 @@
                     }
                     if(score>100){
                         coins += 10;// A partir de de 100 voce ganhara 10 coins
+                    }
+                    if(score>200){
+                        coins += 20;// A partir de de 200 voce ganhara 20 coins
                     }
         
                 }
@@ -533,8 +537,8 @@
                 }
             }
         });
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'KeyW' && !gameOver) {
+        document.addEventListener('click', (e) => {
+            if (!gameOver) {
                 bird.velocity = bird.lift;
             } else if (e.code === 'KeyW') {
                 if (document.getElementById('startScreen').style.display === 'none' && gameOver) {
